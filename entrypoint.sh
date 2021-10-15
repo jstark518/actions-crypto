@@ -18,7 +18,6 @@ enc_dir() {
 
 # check
 [ -e $c_path ] || { echo "$c_path not exist." ; exit 1; }
-[ "$c_action" == 'enc' ] || [ "$c_action" == 'dec' ] || { echo "action in 'enc,dec'"; exit 1; }
  
 if [ -d $c_path ]; then 
   echo "action dir ${c_path}"
