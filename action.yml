@@ -5,15 +5,11 @@ inputs:
   crypto-path:
     required: true
     description: ''
-  crypto-action:
-    required: true
-    description: ''
 runs:
   using: 'docker'
   image: 'Dockerfile'
   args:
     - ${{ inputs.crypto-path }}
-    - ${{ inputs.crypto-action }}
 branding:
   icon: 'unlock'
   color: 'orange'
