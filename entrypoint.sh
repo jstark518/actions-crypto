@@ -1,27 +1,12 @@
 #!/usr/bin/env bash
 
 c_path=$1
-c_action=$2
-c_password=$3
-
-dec_file() {
-  echo "dec file ${1}";
-  [ "${1: -4}" == '.enc' ] && { openssl enc -d -a -aes-256-cbc -pbkdf2 -iter 1000 -k ${2} -in $1 -out "${1::-4}" && rm -f $1; } || {
-    echo "dec file ${1} failure."; exit 1
-  }
-}
 
 enc_file() {
   echo "enc file ${1}";
-  [ "${1: -4}" != '.enc' ] && { openssl enc -e -a -aes-256-cbc -pbkdf2 -iter 1000 -k ${2} -in $1 -out "${1}.enc" && rm -f $1; } || {
+  [ "${1: -4}" != '.enc' ] && { openssl enc  -in $1 -out "${1}.enc" -e -aes256 -k .private.pem && rm -f $1; } || {
     echo "enc file ${1} failure."; exit 1
   }
-}
-
-dec_dir() {
-  find $1 -type f -name '*.enc' | while read line; do
-    dec_file $line $2;
-  done
 }
 
 enc_dir() {
@@ -37,7 +22,7 @@ enc_dir() {
  
 if [ -d $c_path ]; then 
   echo "action dir ${c_path}"
-  [ "$c_action" == "enc" ] && enc_dir $c_path $c_password || dec_dir $c_path $c_password
+  enc_dir $c_path
 else
-  [ "$c_action" == 'enc' ] && enc_file $c_path $c_password || dec_file $c_path $c_password
+  enc_file $c_path
 fi
